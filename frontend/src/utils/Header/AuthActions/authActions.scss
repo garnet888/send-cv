@@ -1,0 +1,38 @@
+@import "/src/sass/global";
+
+.authActions {
+  &__buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    @include respondTo(mobile) {
+      display: none;
+    }
+  }
+
+  &__onMobile {
+    display: none;
+
+    @include respondTo(mobile) {
+      display: block;
+    }
+
+    &-iconBtn {
+      width: 2.6rem;
+      height: 2.6rem;
+
+      display: grid;
+      place-items: center;
+
+      background-color: dodgerblue !important;
+      color: gray;
+      font-size: 18px;
+
+      svg {
+        vertical-align: middle;
+        margin-left: -0.3rem;
+      }
+    }
+  }
+}

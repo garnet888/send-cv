@@ -1,0 +1,98 @@
+@import "/src/sass/global";
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $header-zIndex;
+
+  height: $header-height;
+
+  display: grid;
+  grid-template-columns: auto minmax(0, 1920px) auto;
+  grid-template-areas: ". headSection .";
+
+  background-color: white;
+  border-bottom: 1px solid darkgray;
+
+  &__section {
+    grid-area: headSection;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-inline: 1rem;
+
+    &-logoFig {
+      user-select: none;
+
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      &-img {
+        width: 3.6rem;
+        height: 3.6rem;
+
+        border-radius: 100%;
+      }
+
+      &-txt {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .headerMenu {
+    position: absolute;
+    z-index: $menu-zIndex;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+
+    background-color: white;
+    box-shadow: 0 0 1rem 1rem rgba($color: black, $alpha: 0.06);
+    border-radius: 0.6rem;
+
+    white-space: nowrap;
+    padding: 0.8rem;
+
+    &.user {
+      top: 40px;
+      right: 0;
+    }
+    &.actions {
+      top: 48px;
+      right: 6px;
+    }
+
+    &.hidden {
+      display: none;
+    }
+
+    &-item {
+      border-radius: 0.6rem;
+      padding: 0.4rem 0.6rem;
+
+      &.active {
+        background-color: $primary-color;
+        color: white;
+      }
+
+      &.signOutBtn {
+        text-align: left;
+        color: orange !important;
+
+        padding-block: 1.4rem;
+
+        &:hover {
+          font-weight: 600;
+          background-color: $gray-light;
+        }
+      }
+    }
+  }
+}

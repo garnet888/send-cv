@@ -1,0 +1,17 @@
+// IMPORT BASE
+@import "./base/base";
+@import "./base/typography";
+@import "./base/utilities";
+
+// IMPORT LAYOUTS
+@import "pages/admin/login";
+@import "pages/admin/admin";
+
+@import "pages/authAccount";
+@import "pages/profile/profile";
+@import "pages/profile/myBlogsList";
+@import "pages/profile/myBlogForm";
+@import "pages/workList";
+@import "pages/detail";
+
+@import "pages/notFound";

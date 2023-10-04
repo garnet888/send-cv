@@ -1,0 +1,15 @@
+@import "src/sass/global";
+
+.admin {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-template-rows:
+    $header-height
+    minmax(calc(100vh - #{$header-height}), 1fr);
+
+  grid-template-areas:
+    "adn_header adn_header"
+    "adn_menu   adn_content";
+
+  background-color: $layout-backcolor;
+}

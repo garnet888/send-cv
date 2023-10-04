@@ -1,0 +1,30 @@
+$breakpoints: (
+  desktop-md: 1200px,
+  desktop-sm: 1024px,
+  tablet: 912px,
+  tablet-sm: 768px,
+  mobile: 540px,
+  mobile-sm: 425px,
+  xs: 320px,
+) !default;
+
+// COLORS
+$primary-color: #12b886;
+$layout-backcolor: #f5f5f5;
+$link-hover: #0050a4;
+$gray-light: #eee;
+
+// HEIGHT & WIDTH
+$header-height: 6rem;
+
+// Z-INDEXES
+$popup-zIndex: 99999;
+$modal-zIndex: calc(#{$popup-zIndex} - 1);
+$header-zIndex: calc(#{$modal-zIndex} - 1);
+$menu-zIndex: calc(#{$header-zIndex} - 1);
+
+// ADMIN
+// $admin-back-color: #f5f5f5;
+// $admin-header-height: 5.2rem;
+$admin-menu-width: 26rem;
+$admin-menu-sm-width: 5.8rem;

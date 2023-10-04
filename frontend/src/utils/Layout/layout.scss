@@ -1,0 +1,26 @@
+@import "/src/sass/global";
+
+.layout {
+  display: grid;
+
+  grid-template-columns: auto minmax(0, 1140px) auto;
+  grid-template-rows: minmax(100vh, auto);
+  grid-template-areas: ". content .";
+
+  background-color: $layout-backcolor;
+  padding-inline: 2rem;
+
+  @include respondTo(xs) {
+    padding-inline: 1rem;
+  }
+
+  &__content {
+    grid-area: content;
+
+    display: grid;
+    place-items: center;
+
+    margin-top: calc(#{$header-height} + 3rem);
+    margin-bottom: 3rem;
+  }
+}

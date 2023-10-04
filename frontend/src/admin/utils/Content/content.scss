@@ -1,0 +1,26 @@
+@import "src/sass/global";
+
+$bigContentWidth: calc(100rem - #{$admin-menu-width});
+
+.content {
+  grid-area: adn_content;
+
+  // width: calc(100% - 1.6rem);
+  min-width: 100rem;
+
+  background-color: white;
+  border-radius: 0.8rem;
+  box-shadow: -1px -1px 4px rgba($color: black, $alpha: 0.2),
+    2px 2px 4px rgba($color: black, $alpha: 0.2);
+
+  padding: 0.6rem 1rem;
+  margin: 0.8rem 0.8rem 0.8rem 0.8rem;
+
+  @include respondTo(desktop-sm) {
+    min-width: $bigContentWidth;
+  }
+
+  &.bigContent {
+    min-width: $bigContentWidth;
+  }
+}

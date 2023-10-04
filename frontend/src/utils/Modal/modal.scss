@@ -1,0 +1,41 @@
+@import "/src/sass/global";
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $modal-zIndex;
+
+  overflow-y: auto;
+
+  display: grid;
+  place-items: center;
+
+  background-color: rgba($color: gainsboro, $alpha: 0.2);
+  backdrop-filter: blur(0.24rem);
+
+  padding-inline: 4rem;
+  padding-block: 6rem;
+
+  &__content {
+    position: relative;
+
+    background-color: white;
+    border-radius: 0.8rem;
+
+    padding: 1rem;
+
+    &-closeBtn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      z-index: 1;
+
+      box-shadow: 0 0 0.2rem 0.2rem rgba($color: black, $alpha: 0.1);
+      background-color: rgba(210, 210, 210, 0.6);
+      border-radius: 100%;
+    }
+  }
+}

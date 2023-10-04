@@ -1,0 +1,213 @@
+@import "src/sass/global";
+
+$heading-height: 4.38rem;
+$opened-color: rgba(0, 149, 255, 0.3);
+
+.adnAside {
+  grid-area: adn_menu;
+
+  user-select: none;
+  width: $admin-menu-width;
+  transition: width 0.5s;
+
+  @include respondTo(desktop-sm) {
+    width: $admin-menu-sm-width;
+  }
+
+  .adnNavbar {
+    position: fixed;
+    top: $header-height;
+    // z-index: $header-zIndex;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    @include changeScrollbar($width: 0.4rem);
+
+    height: calc(100vh - #{$header-height});
+    background-color: #06c2b5;
+
+    .adnMenu {
+      width: $admin-menu-width;
+
+      display: flex;
+      flex-direction: column;
+      padding-block: 0.3rem;
+
+      transition: width 0.5s;
+
+      @include respondTo(desktop-sm) {
+        width: $admin-menu-sm-width;
+
+        &:hover {
+          width: $admin-menu-width;
+
+          .adnMenu__item-content.opened {
+            height: auto;
+          }
+          .adnMenu__item-heading.opened {
+            border-radius: 0.6rem 0.6rem 0 0;
+          }
+        }
+      }
+
+      &__item {
+        cursor: pointer;
+
+        display: flex;
+        flex-direction: column;
+
+        color: white;
+        border-radius: 0.6rem;
+        margin: 0.6rem;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        &.opened {
+          background-color: $opened-color;
+        }
+
+        &.plain {
+          height: $heading-height;
+
+          flex-direction: row;
+          align-items: center;
+
+          &.active {
+            background-color: rgba(151, 252, 151, 0.5);
+          }
+        }
+
+        &-heading {
+          width: 100%;
+          height: $heading-height;
+
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          &.opened {
+            background-color: $opened-color;
+            border-radius: 0.6rem 0.6rem 0 0;
+          }
+          &.menuActive {
+            background-color: rgba(151, 252, 151, 0.5);
+            border-radius: 0.6rem;
+          }
+
+          &-title {
+            display: flex;
+            align-items: center;
+          }
+        }
+        &-content {
+          height: 0;
+          overflow: hidden;
+          padding: 0 0.6rem;
+
+          &.opened {
+            height: auto;
+
+            @include respondTo(desktop-sm) {
+              height: 0;
+            }
+          }
+        }
+
+        &-icon,
+        &-arrow {
+          min-width: calc(#{$admin-menu-sm-width} - 1.2rem);
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          transition: color 1s, transform 0.3s;
+
+          svg {
+            font-size: 20px;
+          }
+
+          &.opened {
+            color: rgb(151, 252, 151);
+            transform: rotate(90deg);
+          }
+        }
+
+        &-name {
+          white-space: nowrap;
+          margin-left: 0.6rem;
+
+          transition: opacity 0.5s;
+        }
+      }
+    }
+  }
+}
+
+/* ======== Small Menu ======== */
+.adnAside.small {
+  width: $admin-menu-sm-width;
+
+  .adnLogo {
+    width: $admin-menu-sm-width;
+  }
+
+  .adnMenu {
+    width: $admin-menu-sm-width;
+
+    &:hover {
+      width: $admin-menu-width;
+
+      .adnMenu__item-content.opened {
+        height: auto;
+      }
+      .adnMenu__item-heading.opened {
+        border-radius: 0.6rem 0.6rem 0 0;
+      }
+    }
+
+    &__item-content.opened {
+      height: 0;
+    }
+
+    &__item-heading.opened {
+      border-radius: 0.6rem;
+      transition: border-radius 0.5s;
+    }
+  }
+}
+
+/* ======== Menu Toggle ======== */
+.adnAside .adnMenuToggle {
+  cursor: pointer;
+
+  width: fit-content;
+  background-color: white;
+  border-radius: 0.6rem;
+
+  padding: 0.6rem;
+  margin: 0.8rem;
+
+  &-line {
+    width: 2.4rem;
+    height: 0.24rem;
+
+    background-color: black;
+    border-radius: 1rem;
+
+    margin-block: 4px;
+
+    transition: width 0.4s;
+
+    &.middle.short {
+      width: 1.6rem;
+      transition: width 0.3s;
+    }
+    &.bottom.short {
+      width: 1rem;
+      transition: width 0.6s;
+    }
+  }
+}

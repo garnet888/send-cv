@@ -1,0 +1,109 @@
+@import "src/sass/global";
+
+.adnHeader {
+  grid-area: adn_header;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $header-zIndex;
+
+  width: 100%;
+  height: $header-height;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: white;
+  box-shadow: 0 0 1rem 1rem rgba($color: black, $alpha: 0.04);
+
+  &__heading {
+    width: $admin-menu-width;
+
+    display: flex;
+    align-items: center;
+
+    padding-left: 1rem;
+
+    &-logo {
+      height: 3.2rem;
+
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+
+      margin-left: 2rem;
+
+      &:hover {
+        filter: drop-shadow(0 0 1px #ababab);
+      }
+
+      img {
+        height: 100%;
+        border-radius: 100%;
+      }
+    }
+  }
+
+  &__body {
+    flex: 1;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-inline: 1rem;
+
+    &-title {
+      font-weight: 400;
+      font-size: 20px;
+    }
+
+    &-logout {
+      background: none;
+      border: none;
+
+      border-radius: 100%;
+      padding: 0.4rem;
+
+      &:hover {
+        background-color: $gray-light;
+        border-radius: 100%;
+      }
+
+      svg {
+        font-size: 20px;
+        color: orange;
+      }
+    }
+  }
+}
+
+.adnHeader .adnMenuToggle {
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.4rem;
+
+  .toggleLine {
+    width: 2.6rem;
+    height: 0.28rem;
+
+    background-color: black;
+    border-radius: 6rem;
+
+    transition: width 0.4s;
+
+    &.middle.short {
+      width: 1.8rem;
+      transition: width 0.4s;
+    }
+    &.bottom.short {
+      width: 1rem;
+      transition: width 0.6s;
+    }
+  }
+}

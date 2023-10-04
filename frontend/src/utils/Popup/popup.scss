@@ -1,0 +1,77 @@
+@import "/src/sass/global";
+
+.popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $popup-zIndex;
+
+  display: grid;
+  place-items: center;
+
+  background-color: rgba($color: gainsboro, $alpha: 0.2);
+  backdrop-filter: blur(0.24rem);
+
+  padding-inline: 4rem;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    background-color: white;
+    border-radius: 0.8rem;
+
+    padding: 3rem 1rem;
+
+    &.success {
+      border: 3px solid green;
+
+      .yesButton {
+        background-color: green;
+        border-color: green;
+      }
+    }
+    &.alert {
+      border: 3px solid orange;
+
+      .yesButton {
+        background-color: orange;
+        border-color: orange;
+      }
+      .noButton {
+        background-color: gray;
+        border-color: gray;
+      }
+    }
+    &.error,
+    &.sys_error {
+      border: 3px solid red;
+
+      .yesButton {
+        background-color: red;
+        border-color: red;
+      }
+    }
+
+    &-message {
+      width: 30rem;
+
+      font-size: 18px;
+      text-align: center;
+
+      @include respondTo(mobile) {
+        width: 100%;
+      }
+    }
+
+    &-bottom {
+      display: flex;
+      gap: 2rem;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+@import "/src/sass/global";
+
+.myBlogsList {
+  width: 100%;
+  min-height: calc(100vh - #{$header-height} - 6rem);
+  height: 100%;
+
+  background-color: white;
+  box-shadow: 0 0 4px 2px rgba($color: gray, $alpha: 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+
+  padding: 2rem;
+}

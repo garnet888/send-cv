@@ -1,0 +1,40 @@
+@import "src/sass/global";
+
+.notFound {
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &-robot {
+    width: 36rem;
+    margin: 1.6rem 0 4rem 0;
+
+    @include respondTo(mobile) {
+      width: 24rem;
+    }
+  }
+
+  &-text {
+    font-size: 24px;
+    text-transform: uppercase;
+  }
+
+  &-goHome {
+    width: 22rem;
+
+    color: $primary-color;
+    border-bottom: 1px solid $primary-color;
+
+    font-size: 16.8px;
+    text-align: center;
+
+    padding-bottom: 0.2rem;
+
+    &:hover {
+      border-color: $link-hover;
+    }
+  }
+}
