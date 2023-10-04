@@ -26,7 +26,7 @@ const MyInput = ({
     return isTextarea ? (
       <textarea
         name={name}
-        value={value}
+        value={value ? value : ""}
         rows={rows}
         onChange={onChange}
         onBlur={onBlur}
@@ -36,7 +36,7 @@ const MyInput = ({
         id={id}
         name={name}
         placeholder={placeholder}
-        value={value}
+        value={value ? value : ""}
         type={type}
         onChange={onChange}
         onBlur={onBlur}

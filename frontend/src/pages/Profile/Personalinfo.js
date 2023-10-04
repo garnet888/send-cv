@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import MyInput from "../../ui/myInput/MyInput";
 import Loader from "../../utils/Loader/Loader";
 import Popup from "../../utils/Popup/Popup";
-import FileUploader from "../../ui/fileUploader/FileUploader";
+import ChangeAvatarModal from "../../components/Profile/ChangeAvatarModal/ChangeAvatarModal";
 
 const _userIcn = require("../../assets/user-icon.png");
 
@@ -33,10 +33,9 @@ const _userPhoto = "https://images5.alphacoders.com/132/1328421.png";
 /*=======================================================================*/
 
 const Personalinfo = () => {
-  const [previewIMG, setPreviewIMG] = useState(_userIcn);
-  const [selectedIMG, setSelectedIMG] = useState(null);
-
   const [data, setData] = useState({});
+
+  const [showChangeAvatar, setShowChangeAvatar] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [btnIsLoading, setBtnIsLoading] = useState(false);
 
@@ -47,14 +46,7 @@ const Personalinfo = () => {
   useEffect(() => {
     setData({});
     setIsLoading(false);
-
-    if (_userPhoto) {
-      setPreviewIMG(_userPhoto);
-      setSelectedIMG(_userPhoto);
-    } else {
-      setPreviewIMG(_userIcn);
-    }
-  }, [_userPhoto]);
+  }, []);
 
   const saveHandler = (values) => {
     setBtnIsLoading(false);
@@ -63,7 +55,6 @@ const Personalinfo = () => {
     setPopupText("Амжилттай хадгалагдлаа");
     setVisiblePopup(true);
 
-    console.log("Selected image=>", selectedIMG);
     console.log("Personal info=>", values);
   };
 
@@ -78,13 +69,19 @@ const Personalinfo = () => {
         onOk={() => window.location.reload()}
       />
 
+      <ChangeAvatarModal
+        avatar={_userPhoto}
+        visible={showChangeAvatar}
+        onCancel={setShowChangeAvatar}
+      />
+
       <b className="profile__title">Хувийн мэдээлэл</b>
 
       <figure className="profile__avatar">
         <img
           id="avatar"
-          className={`profile__avatar-img ${selectedIMG || "noAvatar"}`}
-          src={previewIMG}
+          className="profile__avatar-img"
+          src={_userPhoto}
           alt="no file"
           onError={(e) => {
             e.target.onerror = null;
@@ -92,14 +89,12 @@ const Personalinfo = () => {
           }}
         />
 
-        <div className="profile__avatar-upload">
-          <FileUploader
-            text={<BsCameraFill />}
-            getFile={setSelectedIMG}
-            getPreviewIMG={setPreviewIMG}
-            noBtn
-          />
-        </div>
+        <button
+          className="profile__avatar-upload"
+          onClick={() => setShowChangeAvatar(true)}
+        >
+          <BsCameraFill />
+        </button>
       </figure>
 
       <Formik

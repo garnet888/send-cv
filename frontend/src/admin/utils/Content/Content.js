@@ -4,7 +4,7 @@ import ROUTES from "../../routes";
 import { getRouteFromTree } from "../../lib/Functions";
 import { scrollToTop } from "../../../lib/Functions";
 import UserForm from "../../pages/Users/UserForm";
-import CvForm from "../../pages/CVs/CvForm";
+import ReceivedCVForm from "../../pages/ReceivedCVs/ReceivedCVForm";
 import WorkForm from "../../pages/Works/WorkForm";
 
 import "./content.scss";
@@ -18,8 +18,8 @@ const Content = ({ smallMenu }) => {
   ]);
 
   const cvsPaths = useRoutes([
-    { path: "/cvs/add", element: <CvForm /> },
-    { path: "/cvs/form/:id", element: <CvForm /> },
+    { path: "/received-cvs/add", element: <ReceivedCVForm /> },
+    { path: "/received-cvs/form/:id", element: <ReceivedCVForm /> },
   ]);
 
   const worksPaths = useRoutes([

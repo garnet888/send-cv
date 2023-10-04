@@ -53,9 +53,18 @@ const UserAvatar = () => {
           className={({ isActive }) =>
             `headerMenu-item ${isActive && "active"}`
           }
+          to="/personal-info"
+        >
+          Хувийн мэдээлэл
+        </NavLink>
+
+        <NavLink
+          className={({ isActive }) =>
+            `headerMenu-item ${isActive && "active"}`
+          }
           to="/my-cv"
         >
-          Миний CV
+          Миний анкет
         </NavLink>
         <NavLink
           className={({ isActive }) =>
@@ -63,17 +72,9 @@ const UserAvatar = () => {
           }
           to="/sent-cv"
         >
-          Илгээсэн CV
+          Илгээсэн анкет
         </NavLink>
 
-        <NavLink
-          className={({ isActive }) =>
-            `headerMenu-item ${isActive && "active"}`
-          }
-          to="/personal-info"
-        >
-          Хувийн мэдээлэл
-        </NavLink>
         <NavLink
           className={({ isActive }) =>
             `headerMenu-item ${isActive && "active"}`

@@ -17,28 +17,13 @@
     color: black;
   }
 
-  &__logo {
-    width: 8rem;
-    height: 8rem;
-    object-fit: contain;
-  }
-
   &__info {
-    flex: 1;
-
-    &-comName {
-      font-size: 14px;
-      font-weight: 500;
-
-      margin-bottom: 0.6rem;
-    }
-
-    &-salary {
-      font-size: 14px;
+    &-name {
+      margin-bottom: -0.46rem;
     }
   }
 
-  &__date {
+  &__text {
     font-size: 14px;
   }
 }

@@ -1,40 +1,23 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-const _exLogo1 =
-  "https://t4.ftcdn.net/jpg/02/04/59/29/360_F_204592965_Xgu7wwQEj8QSnmI0HALnFzyBAIUOMz0j.jpg";
-const _exLogo2 =
-  "https://logo.com/image-cdn/images/kts928pd/production/9b98774a34ba33e8298f12960875c0796b7b0a66-900x550.png?w=1080&q=72";
-
 const Detail = () => {
   const { id } = useParams();
 
   return (
     <div className="detail">
       <div className="detail__heading">
-        <figure className="detail__heading-fig">
-          <img
-            className="detail__heading-fig-logo"
-            src={id % 2 === 0 ? _exLogo1 : _exLogo2}
-            alt="no file"
-          />
-
-          <figcaption className="detail__heading-fig-name">
-            Organization's Name {parseInt(id) + 1}
-          </figcaption>
-        </figure>
+        <h3 className="detail__heading-jobName">
+          Work Name {parseInt(id) + 1}
+          <p className="detail__heading-jobName-salary">
+            2.100.000₮ - 2.500.000₮ / Work Type / Бүтэн цагийн
+          </p>
+        </h3>
 
         <p className="detail__heading-date">10-р сарын 01, 13:04</p>
       </div>
 
       <div className="detail__content">
-        <h3 className="detail__content-workName">
-          Work Name {parseInt(id) + 1}
-          <p className="detail__content-workName-salary">
-            2.100.000₮ - 2.500.000₮ / Work Type / Бүтэн цагийн
-          </p>
-        </h3>
-
         <div className="detail__content-text">
           <b>Ажлын байрны зорилго/үүрэг:</b>
 

@@ -1,0 +1,106 @@
+@import "/src/sass/global";
+
+.cvCard {
+  background-color: white;
+  box-shadow: 0 0 4px 2px rgba($color: gray, $alpha: 0.1);
+  border-radius: 1.2rem;
+
+  padding: 1rem;
+
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    @include respondTo(mobile) {
+      justify-content: center;
+    }
+
+    &-title {
+      color: gray;
+
+      @include respondTo(mobile) {
+        text-align: center;
+      }
+    }
+
+    &-addBtn {
+      background-color: dodgerblue;
+      border-color: dodgerblue;
+      font-weight: bolder;
+
+      padding: 1rem 0.6rem;
+    }
+  }
+
+  &__content {
+    padding-inline: 1rem;
+    margin-top: 1rem;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    &.absolute {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+
+      @include respondTo(mobile) {
+        bottom: unset;
+        top: 8px;
+      }
+    }
+
+    &-btn {
+      padding: 0.1rem;
+
+      svg {
+        font-size: 20px;
+      }
+
+      &.add {
+        background-color: dodgerblue;
+        border-color: dodgerblue;
+        font-weight: bolder;
+
+        padding: 1rem 0.6rem;
+      }
+      &.delete {
+        background-color: red;
+        border-color: red;
+      }
+    }
+  }
+}
+
+.cvCard-Modal {
+  &__title {
+    border-bottom: 1px solid darkgray;
+    text-align: center;
+
+    margin-bottom: 1rem;
+  }
+
+  .planningJob-content {
+    padding-inline: 10rem;
+  }
+  .jobHistory-content,
+  .subSkill-content {
+    padding-inline: 2rem;
+  }
+  .jobSkill-content {
+    padding-inline: 4rem;
+  }
+
+  .planningJob-content,
+  .jobHistory-content,
+  .subSkill-content,
+  .jobSkill-content {
+    @include respondTo(mobile) {
+      padding-inline: 0;
+    }
+  }
+}
