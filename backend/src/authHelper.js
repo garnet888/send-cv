@@ -9,36 +9,41 @@ const hash = (string) => {
 };
 
 const setToken = ({ id, email, password, res }) => {
-  return new Promise((resolve, reject) => {
+  try {
     const token = jwt.sign({ id, email, password }, APP_SECRET, {
       expiresIn: 3600,
     });
 
-    res.json({ token });
-    resolve({ token });
-  });
+    res.status(200).json({ token });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
 };
 
-const authAccount = (token) => {
-  return new Promise((resolve, reject) => {
+const authAccount = async (res, token) => {
+  try {
     let isAuthed = false;
 
     if (token) {
       const { email, password } = jwt.decode(token, APP_SECRET);
 
-      UsersTable.getByEmail({ email })
-        .then(({ user }) => {
-          if (user && user.password === password) {
-            isAuthed = true;
-          }
+      const { user } = await UsersTable.getByEmail({ email });
 
-          resolve({ user, isAuthed });
-        })
-        .catch((error) => reject(error));
+      if (user && user.password === password) {
+        isAuthed = true;
+
+        res.status(200).json({ user, isAuthed });
+      } else {
+        res.status(404).json({ message: "Буруу баталгаажуулалт" });
+      }
     } else {
-      resolve({ isAuthed });
+      res.status(404).json({ message: "Токен байхгүй байна!" });
     }
-  });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = { hash, setToken, authAccount };
