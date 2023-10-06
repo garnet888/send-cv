@@ -21,8 +21,6 @@ function App() {
 
   return (
     <Routes>
-      {console.log("CHANGE ENV")}
-
       <Route
         path="/admin/*"
         element={isAdminAuth ? <Admin /> : <AdminLogin />}
