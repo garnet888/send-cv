@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: process.env.AXIOS_URL || "http://localhost:5000/",
+  baseURL: "https://send-cv-backend.vercel.app/api",
 });
