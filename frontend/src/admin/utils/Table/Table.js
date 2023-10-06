@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { RenderTable, renderActions } from "./RendererFunc";
-// import { useAuthContext } from "../../context/AuthContext";
+import { useAdminContext } from "../../../context/AdminContext";
 import Axios from "../../../Axios";
 import Loader from "../../../utils/Loader/Loader";
 import Popup from "../../../utils/Popup/Popup";
@@ -29,8 +29,7 @@ const Table = ({
   disableRowCount = false,
   disableGotoPage = false,
 }) => {
-  // const { axiosConfig } = useAuthContext();
-  const axiosConfig = "";
+  const { adminConfig } = useAdminContext();
   const navigate = useNavigate();
 
   const [DATA, setDATA] = useState([]);
@@ -59,12 +58,12 @@ const Table = ({
   function deleteOnHandle() {
     const API_PATH = apiPath + "/delete/" + dataID;
 
-    Axios.delete(API_PATH, axiosConfig)
+    Axios.delete(API_PATH, adminConfig)
       .then((res) => {
-        if (res.data.status === 409) {
-          showError(res.data.message);
-        } else {
+        if (res.data.message === "success") {
           window.location.reload();
+        } else {
+          showError();
         }
       })
       .catch(() => showError());
@@ -82,10 +81,8 @@ const Table = ({
     function getProfileImg(data) {
       let profile = "";
 
-      if (data && data.image) {
-        profile = data.image;
-      } else if (data && data.avatar) {
-        profile = data.avatar;
+      if (data && data.photo) {
+        profile = data.photo;
       } else if (data && data.logo) {
         profile = data.logo;
       }
@@ -99,7 +96,7 @@ const Table = ({
 
     if (apiPath) {
       // Axios.get(apiPath + apiSubPath ? apiSubPath : "")
-      Axios.get(apiPath)
+      Axios.get(apiPath + "/list", adminConfig)
         .then((res) => {
           const { data: axiosData } = res;
 
@@ -142,6 +139,7 @@ const Table = ({
         });
     }
   }, [
+    adminConfig,
     currentHref,
     apiPath,
     apiSubPath,

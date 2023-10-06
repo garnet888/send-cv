@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useAuthContext } from "../../context/AuthContext";
+import Axios from "../../Axios";
 import MyInput from "../../ui/myInput/MyInput";
 import Popup from "../../utils/Popup/Popup";
 import Loader from "../../utils/Loader/Loader";
@@ -19,20 +21,70 @@ const schema = Yup.object().shape({
 });
 
 const ChangePassword = () => {
+  const { authConfig, loginHandler } = useAuthContext();
+
+  const [myEmail, setMyEmail] = useState("");
   const [btnIsLoading, setBtnIsLoading] = useState(false);
 
   const [popupType, setPopupType] = useState("");
   const [popupText, setPopupText] = useState("");
   const [visiblePopup, setVisiblePopup] = useState(false);
 
-  const saveHandler = (values) => {
-    setBtnIsLoading(false);
+  useEffect(() => {
+    Axios.get("/auth/me", authConfig)
+      .then((res) => {
+        if (res.data) {
+          setMyEmail(res.data.email);
+        } else {
+          setPopupType("sys_error");
+          setVisiblePopup(true);
+        }
+      })
+      .catch(() => {
+        setPopupType("sys_error");
+        setVisiblePopup(true);
+      });
+  }, [authConfig]);
 
-    setPopupType("success");
-    setPopupText("Амжилттай хадгалагдлаа");
-    setVisiblePopup(true);
+  const changeHandler = (values) => {
+    setBtnIsLoading(true);
 
-    console.log("Change password=>", values);
+    const DATA = {
+      oldPassword: values.oldPassword,
+      newPassword: values.newPassword,
+    };
+
+    Axios.put("/users/change-password", DATA, authConfig)
+      .then((res) => {
+        if (res.data.message === "success") {
+          loginHandler({
+            email: myEmail,
+            password: values.newPassword,
+            noGoto: true,
+          });
+
+          setPopupType("success");
+          setPopupText("Амжилттай солигдлоо");
+          setVisiblePopup(true);
+        } else {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 409) {
+          setBtnIsLoading(false);
+
+          setPopupType("error");
+          setPopupText(err.response.data.message);
+          setVisiblePopup(true);
+        } else {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        }
+      });
   };
 
   const popupOnOK = () => {
@@ -62,7 +114,7 @@ const ChangePassword = () => {
           newRepassword: "",
         }}
         validationSchema={schema}
-        onSubmit={(vals) => saveHandler(vals)}
+        onSubmit={(vals) => changeHandler(vals)}
       >
         {({
           values,

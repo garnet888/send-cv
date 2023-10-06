@@ -1,103 +1,142 @@
 const UsersTable = require("../tables/usersTable");
-const { authAccount, hash } = require("../authHelper");
-
-// const getUserByID = async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     const user = await UsersTable.getByID({ id });
-
-//     res.status(200).json(user);
-//   } catch (error) {
-//     console.log(error.message);
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+const { hash, authAccount } = require("../authHelper");
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await UsersTable.getAll();
+    const { isAuthed, status, message } = await authAccount(
+      req.headers.token,
+      "ADMIN"
+    );
 
-    res.status(200).json(users);
+    if (isAuthed) {
+      const users = await UsersTable.getAll();
+
+      res.status(200).json(users);
+    } else {
+      res.status(status).json({ message });
+    }
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(500).json({ message: error.message });
   }
 };
 
-// const updateUser = (req, res, next) => {
-//   const { id, firstname, lastname, phonenumber, email } = req.body;
+const getUserByID = async (req, res) => {
+  try {
+    const { isAuthed, status, message } = await authAccount(
+      req.headers.token,
+      "ADMIN"
+    );
 
-//   authAccount(req.headers.token)
-//     .then(({ isAuthed }) => {
-//       if (isAuthed) {
-//         UsersTable.update({
-//           id,
-//           avatar,
-//           firstname,
-//           lastname,
-//           phonenumber,
-//           email,
-//         })
-//           .then((status) => res.json(status))
-//           .catch((error) => {
-//             next(error);
-//           });
-//       } else {
-//         res.json({
-//           status: 409,
-//           message: "Баталгаажуулалт буруу байна!",
-//         });
-//       }
-//     })
-//     .catch((error) => {
-//       next(error);
-//     });
-// };
+    if (isAuthed) {
+      const { id } = req.params;
+      const user = await UsersTable.getByID({ id });
 
-// const changePassword = (req, res, next) => {
-//   const { oldPassword, newPassword } = req.body;
+      res.status(200).json(user);
+    } else {
+      res.status(status).json({ message });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
 
-//   authAccount(req.headers.token)
-//     .then(({ user, isAuthed }) => {
-//       if (isAuthed) {
-//         if (user.password === hash(oldPassword)) {
-//           UsersTable.changePassword({
-//             id: user.id,
-//             new_password: hash(newPassword),
-//           })
-//             .then((status) => res.json(status))
-//             .catch((error) => {
-//               next(error);
-//             });
-//         } else {
-//           res.json({
-//             status: 409,
-//             message: "Хуучин нууц үг таарахгүй байна!",
-//           });
-//         }
-//       } else {
-//         res.json({
-//           status: 409,
-//           message: "Баталгаажуулалт буруу байна!",
-//         });
-//       }
-//     })
-//     .catch((error) => next(error));
-// };
+const updateUser = async (req, res) => {
+  try {
+    const {
+      photo,
+      firstname,
+      lastname,
+      birthDate,
+      register,
+      gender,
+      address,
+      phonenumber,
+      email,
+    } = req.body;
 
-// const deleteUser = (req, res, next) => {
-//   const { id } = req.params;
+    const { user, isAuthed, status, message } = await authAccount(
+      req.headers.token
+    );
 
-//   UsersTable.delete({ id })
-//     .then((response) => res.json(response))
-//     .catch((error) => next(error));
-// };
+    if (isAuthed) {
+      const result = await UsersTable.update({
+        id: user.id,
+        photo,
+        firstname,
+        lastname,
+        birthDate,
+        register,
+        gender,
+        address,
+        phonenumber,
+        email,
+      });
+
+      res.status(200).json(result);
+    } else {
+      res.status(status).json({ message });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+
+    const { user, isAuthed, status, message } = await authAccount(
+      req.headers.token
+    );
+
+    if (isAuthed) {
+      if (user.password === hash(oldPassword)) {
+        const result = await UsersTable.changePassword({
+          id: user.id,
+          new_password: hash(newPassword),
+        });
+
+        res.status(200).json(result);
+      } else {
+        res.status(409).json({ message: "Хуучин нууц үг таарахгүй байна!" });
+      }
+    } else {
+      res.status(status).json({ message });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { isAuthed, status, message } = await authAccount(
+      req.headers.token,
+      "ADMIN"
+    );
+
+    if (isAuthed) {
+      const { id } = req.params;
+
+      const result = await UsersTable.delete({ id });
+      res.status(200).json(result);
+    } else {
+      res.status(status).json({ message });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
 
 module.exports = {
   getAllUsers,
-  // getUserByID,
-  // updateUser,
-  // changePassword,
-  // deleteUser,
+  getUserByID,
+  updateUser,
+  changePassword,
+  deleteUser,
 };

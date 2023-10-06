@@ -6,7 +6,7 @@ const jobTypes = async (req, res) => {
 
     res.status(200).json(types);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -17,7 +17,7 @@ const wkTimeTypes = async (req, res) => {
 
     res.status(200).json(types);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(500).json({ message: error.message });
   }
 };

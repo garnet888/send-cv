@@ -1,37 +1,35 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { RiLogoutCircleRLine } from "react-icons/ri";
+import { useAdminContext } from "../../../context/AdminContext";
 import ROUTES from "../../routes";
 import { getValueFromTree } from "../../lib/Functions";
-import Modal from "../../../utils/Modal/Modal";
+import Popup from "../../../utils/Popup/Popup";
 
 import "./header.scss";
 
 const _logo = require("../../../assets/logo.png");
 
 const Header = ({ smallMenu, setSmallMenu }) => {
-  const { pathname } = useLocation();
-  const [showMessage, setShowMessage] = useState(false);
+  const { logoutHandler } = useAdminContext();
 
-  function getMenuItemHeading() {
+  const { pathname } = useLocation();
+  const [visibleAlert, setVisibleAlert] = useState(false);
+
+  const getMenuItemHeading = () => {
     return ROUTES.map((item) =>
       getValueFromTree(item, pathname, "title", "heading")
     );
-  }
-
-  function messageOnOK() {
-    localStorage.removeItem("adminAuth");
-    window.location.replace("/admin");
-  }
+  };
 
   return (
     <header className="adnHeader">
-      <Modal
+      <Popup
         messageType="alert"
         messageText="Та гарахдаа итгэлтэй байна уу?"
-        visible={showMessage}
-        onOk={messageOnOK}
-        onCancel={() => setShowMessage(false)}
+        visible={visibleAlert}
+        onOk={logoutHandler}
+        onCancel={() => setVisibleAlert(false)}
       />
 
       <div className="adnHeader__heading">
@@ -55,7 +53,7 @@ const Header = ({ smallMenu, setSmallMenu }) => {
 
         <button
           className="adnHeader__body-logout"
-          onClick={() => setShowMessage(true)}
+          onClick={() => setVisibleAlert(true)}
         >
           <RiLogoutCircleRLine />
         </button>

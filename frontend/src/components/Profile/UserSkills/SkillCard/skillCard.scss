@@ -1,0 +1,14 @@
+@import "/src/sass/global";
+
+.skillCard {
+  width: fit-content;
+
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  border: 1px solid darkgray;
+  border-radius: 0.6rem;
+
+  padding: 0.4rem 0.6rem;
+}

@@ -7,7 +7,10 @@ const Users = () => {
   const { pathname } = useLocation();
 
   const addButton = (
-    <button className="outline-btn" onClick={() => navigate(pathname + "/form/add")}>
+    <button
+      className="outline-btn"
+      onClick={() => navigate(pathname + "/form/add")}
+    >
       Нэмэх
     </button>
   );
@@ -21,11 +24,11 @@ const Users = () => {
     },
     {
       Header: "Овог",
-      accessor: "name",
+      accessor: "lastname",
     },
     {
       Header: "Нэр",
-      accessor: "username",
+      accessor: "firstname",
     },
 
     {
@@ -36,7 +39,7 @@ const Users = () => {
     },
     {
       Header: "Утас",
-      accessor: (data) => data.address.zipcode,
+      accessor: "phonenumber",
       // Cell: ({ value }) => <p style={{ minWidth: 400 }}>{value}</p>,
       disableSortBy: true,
       disableFilters: true,
@@ -44,15 +47,13 @@ const Users = () => {
   ];
 
   return (
-    <div>
-      <Table
-        currentHref={pathname}
-        apiPath="/users"
-        // apiSubPath={myID && `/byWriter/${myID}`}
-        addButton={addButton}
-        columns={columns}
-      />
-    </div>
+    <Table
+      currentHref={pathname}
+      apiPath="/users"
+      // apiSubPath={myID && `/byWriter/${myID}`}
+      addButton={addButton}
+      columns={columns}
+    />
   );
 };
 

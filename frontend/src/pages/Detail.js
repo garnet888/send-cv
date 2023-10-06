@@ -8,9 +8,9 @@ const Detail = () => {
     <div className="detail">
       <div className="detail__heading">
         <h3 className="detail__heading-jobName">
-          Work Name {parseInt(id) + 1}
+          Job's Name {parseInt(id) + 1}
           <p className="detail__heading-jobName-salary">
-            2.100.000₮ - 2.500.000₮ / Work Type / Бүтэн цагийн
+            2.100.000₮ - 2.500.000₮ / Job Type / Work time type
           </p>
         </h3>
 

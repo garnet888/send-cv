@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useAuthContext } from "../../context/AuthContext";
 import MyInput from "../../ui/myInput/MyInput";
 import Loader from "../../utils/Loader/Loader";
 
@@ -18,14 +19,7 @@ const schema = Yup.object().shape({
 });
 
 const Login = () => {
-  // const { isLoading, loginHandler, errorText } = useAuthContext();
-
-  const isLoading = false;
-  const errorText = "Буруу хаяг байна!";
-
-  const loginHandler = (values) => {
-    console.log("Login=>", values);
-  };
+  const { isLoading, loginHandler } = useAuthContext();
 
   return (
     <div className="authAccount">
@@ -66,8 +60,6 @@ const Login = () => {
               touched={touched.password}
               errorText={errors.password}
             />
-
-            <b className="authAccount__errorText">{errorText}</b>
 
             {isLoading ? (
               <Loader mini />

@@ -1,49 +1,22 @@
 const pool = require("../databasePool");
 
 class UsersTable {
-  static signup({
-    firstname,
-    lastname,
-    register,
-    gender,
-    birth_date,
-    address,
-    phonenumber,
-    email,
-    password,
-  }) {
+  static signup({ firstname, lastname, phonenumber, email, password }) {
     return new Promise((resolve, reject) => {
       pool.query(
         `INSERT INTO users(
             firstname,
             lastname,
-            register,
-            gender,
-            birth_date,
-            address,
             phonenumber,
             email,
             password
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-        [
-          firstname,
-          lastname,
-          register,
-          gender,
-          birth_date,
-          address,
-          phonenumber,
-          email,
-          password,
-        ],
+          ) VALUES ($1, $2, $3, $4, $5)`,
+        [firstname, lastname, phonenumber, email, password],
         (error) => {
           if (error) {
             return reject(error);
           } else {
-            resolve({
-              status: 200,
-              message: "Success",
-            });
+            resolve({ message: "success" });
           }
         }
       );
@@ -101,12 +74,13 @@ class UsersTable {
   }
 
   static update({
+    id,
     photo,
     firstname,
     lastname,
+    birthDate,
     register,
     gender,
-    birth_date,
     address,
     phonenumber,
     email,
@@ -117,20 +91,21 @@ class UsersTable {
             photo = $2,
             firstname = $3,
             lastname = $4,
-            register = $5,
-            gender = $6,
-            birth_date = $7,
+            birth_date = $5,
+            register = $6,
+            gender = $7,
             address = $8,
             phonenumber = $9,
             email = $10
           WHERE id = $1`,
         [
+          id,
           photo,
           firstname,
           lastname,
+          birthDate,
           register,
           gender,
-          birth_date,
           address,
           phonenumber,
           email,
@@ -139,10 +114,7 @@ class UsersTable {
           if (error) {
             return reject(error);
           } else {
-            resolve({
-              status: 200,
-              message: "Success",
-            });
+            resolve({ message: "success" });
           }
         }
       );
@@ -160,10 +132,7 @@ class UsersTable {
           if (error) {
             return reject(error);
           } else {
-            resolve({
-              status: 200,
-              message: "Success",
-            });
+            resolve({ message: "success" });
           }
         }
       );
@@ -173,14 +142,14 @@ class UsersTable {
   static delete({ id }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `DELETE * FROM users
+        `DELETE FROM users
           WHERE id = $1`,
         [id],
-        (error, response) => {
+        (error) => {
           if (error) {
             return reject(error);
           } else {
-            resolve(response.rows[0]);
+            resolve({ message: "success" });
           }
         }
       );

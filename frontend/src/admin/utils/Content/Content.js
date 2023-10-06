@@ -5,7 +5,7 @@ import { getRouteFromTree } from "../../lib/Functions";
 import { scrollToTop } from "../../../lib/Functions";
 import UserForm from "../../pages/Users/UserForm";
 import ReceivedCVForm from "../../pages/ReceivedCVs/ReceivedCVForm";
-import WorkForm from "../../pages/Works/WorkForm";
+import JobForm from "../../pages/Jobs/JobForm";
 
 import "./content.scss";
 
@@ -22,9 +22,9 @@ const Content = ({ smallMenu }) => {
     { path: "/received-cvs/form/:id", element: <ReceivedCVForm /> },
   ]);
 
-  const worksPaths = useRoutes([
-    { path: "/works/add", element: <WorkForm /> },
-    { path: "/works/form/:id", element: <WorkForm /> },
+  const jobsPaths = useRoutes([
+    { path: "/jobs/add", element: <JobForm /> },
+    { path: "/jobs/form/:id", element: <JobForm /> },
   ]);
 
   const getRouteFromMenuItem = () => {
@@ -45,7 +45,7 @@ const Content = ({ smallMenu }) => {
 
       {usersPaths}
       {cvsPaths}
-      {worksPaths}
+      {jobsPaths}
     </main>
   );
 };

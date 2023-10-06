@@ -1,7 +1,7 @@
 import { RiGroupFill, RiFileTextLine, RiBankFill } from "react-icons/ri";
 import Users from "./pages/Users/Users";
 import ReceivedCVs from "./pages/ReceivedCVs/ReceivedCVs";
-import Works from "./pages/Works/Works";
+import Jobs from "./pages/Jobs/Jobs";
 
 const ROUTES = [
   {
@@ -19,8 +19,8 @@ const ROUTES = [
   {
     icon: <RiBankFill />,
     title: "Ажлын байрнууд",
-    path: "/works",
-    component: <Works />,
+    path: "/jobs",
+    component: <Jobs />,
   },
 ];
 

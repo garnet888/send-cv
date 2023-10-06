@@ -1,79 +1,132 @@
-import React, { useState } from "react";
-import { MdOutlineDeleteForever, MdEditNote } from "react-icons/md";
+import React, { useCallback, useEffect, useState } from "react";
+import Axios from "../../../Axios";
+import Loader from "../../../utils/Loader/Loader";
 import CVcard from "../../../utils/CVcard/CVcard";
 import Popup from "../../../utils/Popup/Popup";
 import JobHistoryModal from "./JobHistoryModal";
+import HistoryCard from "./HistoryCard/HistoryCard";
 
 import "./jobHistory.scss";
 
-const JobHistory = () => {
+const JobHistory = ({ userID }) => {
   const TITLE = "Ажлын туршлага";
 
-  const [visibleAlert, setVisibleAlert] = useState(false);
+  const [allData, setAllData] = useState([]);
+  const [jobTypes, setJobTypes] = useState([]);
+  const [dataID, setDataID] = useState("");
+
+  const [isLoading, setIsLoading] = useState(true);
   const [visibleModal, setVisibleModal] = useState(false);
 
-  const deleteHandler = () => {
-    console.log("Deleted");
+  const [popupType, setPopupType] = useState("");
+  const [popupText, setPopupText] = useState("");
+  const [visiblePopup, setVisiblePopup] = useState(false);
+
+  const getJobTypes = useCallback(() => {
+    Axios.get("/jobs/job-types")
+      .then((res) => {
+        setJobTypes(res.data);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setPopupType("sys_error");
+        setPopupText("");
+        setVisiblePopup(true);
+      });
+  }, []);
+
+  const getDATA = useCallback(() => {
+    if (userID) {
+      Axios.get(`/cv-job-his/${userID}`)
+        .then((res) => {
+          getJobTypes();
+
+          setAllData(res.data);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        });
+    }
+  }, [userID, getJobTypes]);
+
+  useEffect(() => {
+    getDATA();
+
+    if (visibleModal === false) {
+      setDataID(null);
+    }
+  }, [getDATA, visibleModal]);
+
+  const showAlertMessage = (id) => {
+    setPopupType("alert");
+    setPopupText("Устгахдаа итгэлтэй байна уу?");
+    setVisiblePopup(true);
+
+    setDataID(id);
   };
 
-  return (
-    <CVcard title={TITLE} setVisibleModal={setVisibleModal}>
+  const deleteHandler = () => {
+    Axios.delete(`/cv-job-his/${dataID}`)
+      .then((res) => {
+        if (res.data.message === "success") {
+          window.location.reload();
+        } else {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        }
+      })
+      .catch(() => {
+        setPopupType("sys_error");
+        setPopupText("");
+        setVisiblePopup(true);
+      });
+  };
+
+  const popupOnOK = () => {
+    if (popupType === "alert") {
+      deleteHandler();
+    } else {
+      window.location.reload();
+    }
+  };
+
+  return isLoading ? (
+    <Loader />
+  ) : (
+    <CVcard title={TITLE} showAddModal={() => setVisibleModal(true)}>
       <Popup
-        messageType="alert"
-        messageText="Устгахдаа итгэлтэй байна уу?"
-        visible={visibleAlert}
-        onCancel={setVisibleAlert}
-        onOk={deleteHandler}
+        messageType={popupType}
+        messageText={popupText}
+        visible={visiblePopup}
+        onCancel={setVisiblePopup}
+        onOk={popupOnOK}
       />
 
       <JobHistoryModal
         title={TITLE}
+        userID={userID}
+        dataID={dataID}
+        jobTypes={jobTypes}
+        setPopupType={setPopupType}
+        setPopupText={setPopupText}
+        setVisiblePopup={setVisiblePopup}
         visible={visibleModal}
         onCancel={setVisibleModal}
       />
 
       <div className="jobHistory">
-        {[...Array(3)].map((_, idx) => (
-          <ul key={idx} className="jobHistory__info">
-            <li className="jobHistory__info-item">
-              <b className="jobHistory__info-item-date">2019/08 - 2020/03</b>
-            </li>
-
-            <li className="jobHistory__info-item">
-              <b>Байгууллагын нэр:</b>
-              Garnet LLC
-            </li>
-
-            <li className="jobHistory__info-item">
-              <b>Байгууллагын салбар:</b>
-              Мэдээлэл технологи
-            </li>
-
-            <li className="jobHistory__info-item">
-              <b>Албан тушаал:</b>
-              Web Developer
-            </li>
-
-            <li className="jobHistory__info-item">
-              <b>Цалин:</b>
-              2'000'000₮
-            </li>
-
-            <div className="cvCard__actions absolute">
-              <button
-                className="cvCard__actions-btn"
-                onClick={() => setVisibleModal(true)}
-              >
-                <MdEditNote />
-              </button>
-              <button
-                className="cvCard__actions-btn delete"
-                onClick={() => setVisibleAlert(true)}
-              >
-                <MdOutlineDeleteForever />
-              </button>
-            </div>
-          </ul>
+        {allData.map((item, idx) => (
+          <HistoryCard
+            key={idx}
+            data={item}
+            getDataID={setDataID}
+            setVisibleModal={setVisibleModal}
+            showAlertMessage={showAlertMessage}
+          />
         ))}
       </div>
     </CVcard>

@@ -1,0 +1,15 @@
+@import "/src/sass/global";
+
+.myRadio {
+  cursor: pointer;
+  user-select: none;
+
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  &-radio,
+  &-label {
+    cursor: pointer;
+  }
+}

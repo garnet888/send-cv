@@ -1,0 +1,40 @@
+@import "/src/sass/global";
+
+.jobMenu {
+  position: relative;
+
+  min-width: 30rem;
+  height: fit-content;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  background-color: #f9f9f9;
+  border-radius: 0.6rem;
+
+  padding: 1rem;
+
+  &__clearBtn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+
+    background-color: orange;
+    border-color: orange;
+    border-radius: 0.4rem;
+
+    font-size: 20px;
+    padding: 0rem;
+  }
+
+  &__types {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+
+    &-item {
+      padding-left: 0.6rem;
+    }
+  }
+}

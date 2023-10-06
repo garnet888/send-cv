@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import MyInput from "../../../ui/myInput/MyInput";
 import Modal from "../../../utils/Modal/Modal";
 import Loader from "../../../utils/Loader/Loader";
+import Axios from "../../../Axios";
 
 const schema = Yup.object().shape({
   maxSalary: Yup.string()
@@ -12,17 +13,75 @@ const schema = Yup.object().shape({
   minSalary: Yup.string()
     .matches(/^[0-9]*$/, "Зөвхөн тоо бичнэ үү!")
     .required("Хоосон байна!"),
-  wkTimeType: Yup.string().required("Хоосон байна!"),
-  jobType: Yup.string().required("Хоосон байна!"),
+  wkTimeTypeID: Yup.string().required("Хоосон байна!"),
+  jobTypeID: Yup.string().required("Хоосон байна!"),
 });
 
-const PlanningJobModal = ({ title, visible, onCancel }) => {
+const PlanningJobModal = ({
+  title,
+  userID,
+  data,
+  jobTypes,
+  timeTypes,
+  setPopupType,
+  setPopupText,
+  setVisiblePopup,
+  visible,
+  onCancel,
+}) => {
   const [btnIsLoading, setBtnIsLoading] = useState(false);
 
-  const saveHandler = (values) => {
-    setBtnIsLoading(false);
+  const getTimeTypeOptions = () => {
+    let options = [];
 
-    console.log("Planning Job Modal=>", values);
+    if (timeTypes) {
+      options = [{ id: "", type: "---" }, ...timeTypes];
+
+      return options.map((item, idx) => (
+        <option key={idx} value={item.id}>
+          {item.type}
+        </option>
+      ));
+    }
+  };
+
+  const getJobTypeOptions = () => {
+    let options = [];
+
+    if (jobTypes) {
+      options = [{ id: "", type: "---" }, ...jobTypes];
+
+      return options.map((item, idx) => (
+        <option key={idx} value={item.id}>
+          {item.type}
+        </option>
+      ));
+    }
+  };
+
+  const saveHandler = (values) => {
+    setBtnIsLoading(true);
+
+    const DATA = {
+      id: data.id,
+      ...values,
+    };
+
+    Axios.post(`/plan-job/${userID}`, DATA)
+      .then((res) => {
+        if (res.data.message === "success") {
+          window.location.reload();
+        } else {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        }
+      })
+      .catch(() => {
+        setPopupType("sys_error");
+        setPopupText("");
+        setVisiblePopup(true);
+      });
   };
 
   return (
@@ -32,10 +91,10 @@ const PlanningJobModal = ({ title, visible, onCancel }) => {
 
         <Formik
           initialValues={{
-            maxSalary: "",
-            minSalary: "",
-            wkTimeType: "",
-            jobType: "",
+            maxSalary: data.max_salary,
+            minSalary: data.min_salary,
+            wkTimeTypeID: data.wk_time_type_id,
+            jobTypeID: data.job_type_id,
           }}
           validationSchema={schema}
           onSubmit={(vals) => saveHandler(vals)}
@@ -81,29 +140,43 @@ const PlanningJobModal = ({ title, visible, onCancel }) => {
               </span>
 
               <span className="myForm__row">
-                <label className="myForm__row-label">Ажиллах төрөл:</label>
-                <MyInput
-                  name="wkTimeType"
-                  value={values.wkTimeType}
+                <label className="myForm__row-label">Ажиллах цагийн төрөл:</label>
+
+                <select
+                  name="wkTimeTypeID"
+                  value={values.wkTimeTypeID}
                   onChange={handleChange}
                   onBlur={setFieldTouched}
-                  touched={touched.wkTimeType}
-                  errorText={errors.wkTimeType}
-                />
+                >
+                  {getTimeTypeOptions()}
+                </select>
+
+                {touched.wkTimeTypeID && errors.wkTimeTypeID && (
+                  <label className="myInput__errorText">
+                    {errors.wkTimeTypeID}
+                  </label>
+                )}
               </span>
 
               <span className="myForm__row">
                 <label className="myForm__row-label">
                   Ажиллахаар төлөвлөж буй чиглэл:
                 </label>
-                <MyInput
-                  name="jobType"
-                  value={values.jobType}
+
+                <select
+                  name="jobTypeID"
+                  value={values.jobTypeID}
                   onChange={handleChange}
                   onBlur={setFieldTouched}
-                  touched={touched.jobType}
-                  errorText={errors.jobType}
-                />
+                >
+                  {getJobTypeOptions()}
+                </select>
+
+                {touched.jobTypeID && errors.jobTypeID && (
+                  <label className="myInput__errorText">
+                    {errors.jobTypeID}
+                  </label>
+                )}
               </span>
 
               {btnIsLoading ? (

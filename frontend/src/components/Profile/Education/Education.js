@@ -1,79 +1,129 @@
-import React, { useState } from "react";
-import { MdOutlineDeleteForever, MdEditNote } from "react-icons/md";
+import React, { useCallback, useEffect, useState } from "react";
+import Axios from "../../../Axios";
+import Loader from "../../../utils/Loader/Loader";
 import CVcard from "../../../utils/CVcard/CVcard";
 import Popup from "../../../utils/Popup/Popup";
+import EduCard from "./EduCard/EduCard";
 import EducationModal from "./EducationModal";
 
 import "./education.scss";
 
-const Education = () => {
+const Education = ({ userID }) => {
   const TITLE = "Боловсрол";
 
-  const [visibleAlert, setVisibleAlert] = useState(false);
+  const [allData, setAllData] = useState([]);
+  const [eduLevels, setEduLevels] = useState([]);
+  const [dataID, setDataID] = useState("");
+
+  const [isLoading, setIsLoading] = useState(true);
   const [visibleModal, setVisibleModal] = useState(false);
 
-  const deleteHandler = () => {
-    console.log("Deleted");
+  const [popupType, setPopupType] = useState("");
+  const [popupText, setPopupText] = useState("");
+  const [visiblePopup, setVisiblePopup] = useState(false);
+
+  const getEduLevels = useCallback(() => {
+    Axios.get("/cv-edu/get-levels")
+      .then((res) => setEduLevels(res.data))
+      .catch(() => {
+        setPopupType("sys_error");
+        setPopupText("");
+        setVisiblePopup(true);
+      });
+  }, []);
+
+  const getDATA = useCallback(() => {
+    if (userID) {
+      Axios.get(`/cv-edu/${userID}`)
+        .then((res) => {
+          getEduLevels();
+
+          setAllData(res.data);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        });
+    }
+  }, [userID, getEduLevels]);
+
+  useEffect(() => {
+    getDATA();
+
+    if (visibleModal === false) {
+      setDataID(null);
+    }
+  }, [getDATA, visibleModal]);
+
+  const showAlertMessage = (id) => {
+    setPopupType("alert");
+    setPopupText("Устгахдаа итгэлтэй байна уу?");
+    setVisiblePopup(true);
+
+    setDataID(id);
   };
 
-  return (
-    <CVcard title={TITLE} setVisibleModal={setVisibleModal}>
+  const deleteHandler = () => {
+    Axios.delete(`/cv-edu/${dataID}`)
+      .then((res) => {
+        if (res.data.message === "success") {
+          window.location.reload();
+        } else {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        }
+      })
+      .catch(() => {
+        setPopupType("sys_error");
+        setPopupText("");
+        setVisiblePopup(true);
+      });
+  };
+
+  const popupOnOK = () => {
+    if (popupType === "alert") {
+      deleteHandler();
+    } else {
+      window.location.reload();
+    }
+  };
+
+  return isLoading ? (
+    <Loader />
+  ) : (
+    <CVcard title={TITLE} showAddModal={() => setVisibleModal(true)}>
       <Popup
-        messageType="alert"
-        messageText="Устгахдаа итгэлтэй байна уу?"
-        visible={visibleAlert}
-        onCancel={setVisibleAlert}
-        onOk={deleteHandler}
+        messageType={popupType}
+        messageText={popupText}
+        visible={visiblePopup}
+        onCancel={setVisiblePopup}
+        onOk={popupOnOK}
       />
 
       <EducationModal
         title={TITLE}
+        userID={userID}
+        dataID={dataID}
+        eduLevels={eduLevels}
+        setPopupType={setPopupType}
+        setPopupText={setPopupText}
+        setVisiblePopup={setVisiblePopup}
         visible={visibleModal}
         onCancel={setVisibleModal}
       />
 
       <div className="education">
-        {[...Array(3)].map((_, idx) => (
-          <ul key={idx} className="education__info">
-            <li className="education__info-item">
-              <b className="education__info-item-date">2016 - 2020</b>
-            </li>
-
-            <li className="education__info-item">
-              <b>Боловсролын зэрэг:</b>
-              Бакалавр
-            </li>
-
-            <li className="education__info-item">
-              <b>Сургуулийн нэр:</b>
-              ШУТИС
-            </li>
-
-            <li className="education__info-item">
-              <b>Эзэмшсэн мэргэжил:</b>
-              Мэдээлэл технологи
-            </li>
-
-            <li className="education__info-item">
-              <b>Голч дүн:</b>
-              2.5
-            </li>
-
-            <div className="cvCard__actions absolute">
-              <button
-                className="cvCard__actions-btn"
-                onClick={() => setVisibleModal(true)}
-              >
-                <MdEditNote />
-              </button>
-              <button
-                className="cvCard__actions-btn delete"
-                onClick={() => setVisibleAlert(true)}
-              >
-                <MdOutlineDeleteForever />
-              </button>
-            </div>
-          </ul>
+        {allData.map((item, idx) => (
+          <EduCard
+            key={idx}
+            data={item}
+            getDataID={setDataID}
+            setVisibleModal={setVisibleModal}
+            showAlertMessage={showAlertMessage}
+          />
         ))}
       </div>
     </CVcard>

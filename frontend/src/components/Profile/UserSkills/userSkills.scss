@@ -1,0 +1,11 @@
+@import "/src/sass/global";
+
+.userSkills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+
+  @include respondTo(mobile) {
+    justify-content: center;
+  }
+}

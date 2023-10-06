@@ -1,17 +1,41 @@
 import React, { useState } from "react";
+import Axios from "../../../Axios";
 import Modal from "../../../utils/Modal/Modal";
 import Loader from "../../../utils/Loader/Loader";
 
 import "./changeAvatarModal.scss";
 
-const ChangeAvatarModal = ({ avatar, visible, onCancel }) => {
-  const [imgURL, setImgURL] = useState(avatar);
+const _userIcn = require("../../../assets/user-icon.png");
+
+const ChangeAvatarModal = ({
+  authConfig,
+  data,
+  avatar,
+  setVisibleSysError,
+  visible,
+  onCancel,
+}) => {
+  const [photo, setPhoto] = useState(avatar);
   const [btnIsLoading, setBtnIsLoading] = useState(false);
 
   const saveHandler = () => {
-    setBtnIsLoading(false);
+    setBtnIsLoading(true);
 
-    console.log("Avatar URL=>", imgURL);
+    const DATA = {
+      ...data,
+      photo: photo,
+      birthDate: data.birth_date,
+    };
+
+    Axios.put("/users/update", DATA, authConfig)
+      .then((res) => {
+        if (res.data.message === "success") {
+          window.location.reload();
+        } else {
+          setVisibleSysError(true);
+        }
+      })
+      .catch(() => setVisibleSysError(true));
   };
 
   return (
@@ -19,10 +43,18 @@ const ChangeAvatarModal = ({ avatar, visible, onCancel }) => {
       <div className="changeAvatarModal">
         <b className="changeAvatarModal__title">Зураг солих</b>
 
-        <img className="changeAvatarModal__avatar" src={imgURL} alt="no file" />
+        <img
+          className="changeAvatarModal__avatar"
+          src={photo ? photo : _userIcn}
+          alt="no file"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = _userIcn;
+          }}
+        />
         <input
           placeholder="Зурагны линк"
-          onChange={(e) => setImgURL(e.target.value)}
+          onChange={(e) => setPhoto(e.target.value)}
         />
 
         {btnIsLoading ? (

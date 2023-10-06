@@ -1,7 +1,7 @@
 import React from "react";
 
 const ReceivedCVForm = () => {
-  return <div>ReceivedCVForm</div>;
+  return <div>Received CV Form</div>;
 };
 
 export default ReceivedCVForm;

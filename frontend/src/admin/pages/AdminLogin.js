@@ -1,28 +1,21 @@
 import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useAdminContext } from "../../context/AdminContext";
 import MyInput from "../../ui/myInput/MyInput";
 import Loader from "../../utils/Loader/Loader";
 
 const _logo = require("../../assets/logo.png");
 
 const schema = Yup.object().shape({
-  email: Yup.string()
-    .email("Зөв форматаар бичнэ үү!")
-    .matches(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/, "Зөв форматаар бичнэ үү!")
-    .required("Хоосон байна!"),
+  username: Yup.string().required("Хоосон байна!"),
   password: Yup.string()
     .min(8, "Хамгийн багадаа 8 тэмдэгт байх ёстой!")
     .required("Хоосон байна!"),
 });
 
 const AdminLogin = () => {
-  const isLoading = false;
-  const errorText = "Буруу хаяг байна!";
-
-  const loginHandler = (values) => {
-    console.log("Login=>", values);
-  };
+  const { isLoading, loginHandler } = useAdminContext();
 
   return (
     <div className="adminLogin">
@@ -30,7 +23,7 @@ const AdminLogin = () => {
         <img className="adminLogin__container-logo" src={_logo} alt="no file" />
 
         <Formik
-          initialValues={{ email: "", password: "" }}
+          initialValues={{ username: "", password: "" }}
           validationSchema={schema}
           onSubmit={(vals) => loginHandler(vals)}
         >
@@ -44,13 +37,13 @@ const AdminLogin = () => {
           }) => (
             <form className="myForm" onSubmit={handleSubmit}>
               <MyInput
-                name="email"
-                placeholder="И-мэйл"
-                value={values.email}
+                name="username"
+                placeholder="Хэрэглэгчийн нэр"
+                value={values.username}
                 onChange={handleChange}
                 onBlur={setFieldTouched}
-                touched={touched.email}
-                errorText={errors.email}
+                touched={touched.username}
+                errorText={errors.username}
               />
               <MyInput
                 name="password"
@@ -62,8 +55,6 @@ const AdminLogin = () => {
                 touched={touched.password}
                 errorText={errors.password}
               />
-
-              <b className="adminLogin__container-errorText">{errorText}</b>
 
               {isLoading ? (
                 <Loader mini />

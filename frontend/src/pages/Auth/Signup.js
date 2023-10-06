@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import Axios from "../../Axios";
 import MyInput from "../../ui/myInput/MyInput";
 import Popup from "../../utils/Popup/Popup";
 import Loader from "../../utils/Loader/Loader";
-
-const _logo = require("../../assets/logo.png");
 
 const schema = Yup.object().shape({
   firstname: Yup.string()
@@ -43,13 +42,39 @@ const Signup = () => {
   const [visiblePopup, setVisiblePopup] = useState(false);
 
   const signupHandler = (values) => {
-    setBtnIsLoading(false);
+    setBtnIsLoading(true);
 
-    setPopupType("success");
-    setPopupText("Амжилттай бүртгэгдлээ. Бүртгэлээрээ нэвтэрч орно уу");
-    setVisiblePopup(true);
+    const DATA = {
+      firstname: values.firstname,
+      lastname: values.lastname,
+      phonenumber: values.phonenumber,
+      email: values.email,
+      password: values.password,
+    };
 
-    console.log("Signup=>", values);
+    Axios.post("/auth/signup", DATA)
+      .then((res) => {
+        if (res.data.message === "success") {
+          setPopupType("success");
+          setPopupText("Амжилттай бүртгэгдлээ. Бүртгэлээрээ нэвтэрч орно уу");
+          setVisiblePopup(true);
+        } else {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 409) {
+          setPopupType("error");
+          setPopupText(err.response.data.message);
+          setVisiblePopup(true);
+        } else {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        }
+      });
   };
 
   const popupOnOK = () => {
@@ -71,8 +96,6 @@ const Signup = () => {
         visible={visiblePopup}
         onOk={() => popupOnOK()}
       />
-
-      <img className="authAccount__logo" src={_logo} alt="no file" />
 
       <b className="authAccount__title">Бүртгүүлэх</b>
 

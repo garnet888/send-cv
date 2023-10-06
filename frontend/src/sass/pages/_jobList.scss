@@ -1,6 +1,6 @@
 @import "/src/sass/global";
 
-.workList {
+.jobList {
   width: 100%;
   height: 100%;
 
@@ -12,13 +12,6 @@
   border-radius: 1rem;
 
   padding: 1rem;
-
-  &__menu {
-    min-width: 30rem;
-    height: 40rem;
-
-    background-color: $gray-light;
-  }
 
   &__content {
     width: 100%;

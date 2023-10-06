@@ -3,10 +3,19 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
+const adminRoute = require("./src/routes/adminRoute");
+const authRoute = require("./src/routes/authRoute");
 const usersRoute = require("./src/routes/usersRoute");
+const planJobRoute = require("./src/routes/planJobRoute");
 const jobsRoute = require("./src/routes/jobsRoute");
 
+const cvEduRoute = require("./src/routes/cvEduRoute");
+const cvJobHisRoute = require("./src/routes/cvJobHisRoute");
+const cvJobSkillRoute = require("./src/routes/cvJobSkillRoute");
+const cvSubSkillRoute = require("./src/routes/cvSubSkillRoute");
+
 const app = express();
+app.use(express.json());
 
 const PORT = process.env.PORT || 80;
 const FRONTEND = process.env.FRONTEND;
@@ -18,8 +27,16 @@ app.use(
   })
 );
 
+app.use("/api/admin", adminRoute);
+app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
+app.use("/api/plan-job", planJobRoute);
 app.use("/api/jobs", jobsRoute);
+
+app.use("/api/cv-edu", cvEduRoute);
+app.use("/api/cv-job-his", cvJobHisRoute);
+app.use("/api/cv-job-skill", cvJobSkillRoute);
+app.use("/api/cv-sub-skill", cvSubSkillRoute);
 
 app.get("/", (req, res) => {
   res.send("Server is running...");

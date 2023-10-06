@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { TiChevronLeft, TiChevronRight } from "react-icons/ti";
 import ReactPaginate from "react-paginate";
 import SearchInput from "../ui/searchInput/SearchInput";
-import WorkCard from "../components/WorkCard/WorkCard";
+import JobCard from "../components/JobCard/JobCard";
+import JobMenu from "../components/JobMenu/JobMenu";
 
-const WorkList = () => {
+const JobList = () => {
   /* ========== Paginate  =================================== */
   const perPage = 10;
   const [dataLength, setDataLength] = useState(10);
@@ -23,16 +24,16 @@ const WorkList = () => {
   }, [currentPage]);
 
   return (
-    <div className="workList">
-      <nav className="workList__menu">Menu</nav>
+    <div className="jobList">
+      <JobMenu />
 
-      <div className="workList__content">
-        <div className="workList__content-search">
+      <div className="jobList__content">
+        <div className="jobList__content-search">
           <SearchInput />
         </div>
 
         {[...Array(dataLength - perPage)].map((_, idx) => (
-          <WorkCard key={idx} id={idx} />
+          <JobCard key={idx} id={idx} />
         ))}
 
         <ReactPaginate
@@ -57,4 +58,4 @@ const WorkList = () => {
   );
 };
 
-export default WorkList;
+export default JobList;

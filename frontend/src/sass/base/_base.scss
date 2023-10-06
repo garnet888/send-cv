@@ -59,6 +59,13 @@ select {
 }
 select {
   cursor: pointer;
-
   padding: 0.3rem 0;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  outline: none;
+
+  width: unset;
+  height: unset;
 }

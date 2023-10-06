@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import Axios from "../../../Axios";
 import MyInput from "../../../ui/myInput/MyInput";
 import Modal from "../../../utils/Modal/Modal";
 import Loader from "../../../utils/Loader/Loader";
 
 const schema = Yup.object().shape({
   companyName: Yup.string().required("Хоосон байна!"),
-  jobType: Yup.string().required("Хоосон байна!"),
+  jobTypeID: Yup.string().required("Хоосон байна!"),
   position: Yup.string().required("Хоосон байна!"),
   salary: Yup.string()
     .matches(/^[0-9]*$/, "Зөвхөн тоо бичнэ үү!")
@@ -16,13 +17,101 @@ const schema = Yup.object().shape({
   leaveDate: Yup.string().required("Хоосон байна!"),
 });
 
-const JobHistoryModal = ({ title, visible, onCancel }) => {
+const JobHistoryModal = ({
+  title,
+  userID,
+  dataID,
+  jobTypes,
+  setPopupType,
+  setPopupText,
+  setVisiblePopup,
+  visible,
+  onCancel,
+}) => {
+  const [data, setData] = useState({});
   const [btnIsLoading, setBtnIsLoading] = useState(false);
 
-  const saveHandler = (values) => {
-    setBtnIsLoading(false);
+  useEffect(() => {
+    if (visible && dataID) {
+      Axios.get(`/cv-job-his/single/${dataID}`)
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch(() => {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        });
+    } else {
+      setData({});
+    }
+  }, [visible, dataID, setPopupType, setPopupText, setVisiblePopup]);
 
-    console.log("Job History Modal=>", values);
+  const getJobTypesOptions = () => {
+    let options = [];
+
+    if (jobTypes) {
+      options = [{ id: "", type: "---" }, ...jobTypes];
+
+      return options.map((item, idx) => (
+        <option key={idx} value={item.id}>
+          {item.type}
+        </option>
+      ));
+    }
+  };
+
+  const addHandler = (values) => {
+    setBtnIsLoading(true);
+
+    Axios.post(`/cv-job-his/${userID}`, values)
+      .then((res) => {
+        if (res.data.message === "success") {
+          window.location.reload();
+        } else {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        }
+      })
+      .catch(() => {
+        setPopupType("sys_error");
+        setPopupText("");
+        setVisiblePopup(true);
+      });
+  };
+
+  const editHandler = (values) => {
+    setBtnIsLoading(true);
+
+    const DATA = {
+      id: dataID,
+      ...values,
+    };
+
+    Axios.put("/cv-job-his", DATA)
+      .then((res) => {
+        if (res.data.message === "success") {
+          window.location.reload();
+        } else {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        }
+      })
+      .catch(() => {
+        setPopupType("sys_error");
+        setPopupText("");
+        setVisiblePopup(true);
+      });
+  };
+
+  const saveHandler = (values) => {
+    if (dataID) {
+      editHandler(values);
+    } else {
+      addHandler(values);
+    }
   };
 
   return (
@@ -32,15 +121,16 @@ const JobHistoryModal = ({ title, visible, onCancel }) => {
 
         <Formik
           initialValues={{
-            companyName: "",
-            jobType: "",
-            position: "",
-            salary: "",
-            enterDate: "",
-            leaveDate: "",
+            companyName: data.company_name,
+            jobTypeID: data.job_type_id,
+            position: data.job_position,
+            salary: data.salary,
+            enterDate: data.enter_date,
+            leaveDate: data.leave_date,
           }}
           validationSchema={schema}
           onSubmit={(vals) => saveHandler(vals)}
+          enableReinitialize
         >
           {({
             values,
@@ -67,14 +157,21 @@ const JobHistoryModal = ({ title, visible, onCancel }) => {
                 <label className="myForm__row-label">
                   Байгууллагын салбар:
                 </label>
-                <MyInput
-                  name="jobType"
-                  value={values.jobType}
+
+                <select
+                  name="jobTypeID"
+                  value={values.jobTypeID}
                   onChange={handleChange}
                   onBlur={setFieldTouched}
-                  touched={touched.jobType}
-                  errorText={errors.jobType}
-                />
+                >
+                  {getJobTypesOptions()}
+                </select>
+
+                {touched.jobTypeID && errors.jobTypeID && (
+                  <label className="myInput__errorText">
+                    {errors.jobTypeID}
+                  </label>
+                )}
               </span>
 
               <span className="myForm__row">
@@ -106,6 +203,7 @@ const JobHistoryModal = ({ title, visible, onCancel }) => {
                 <MyInput
                   name="enterDate"
                   value={values.enterDate}
+                  type="month"
                   onChange={handleChange}
                   onBlur={setFieldTouched}
                   touched={touched.enterDate}
@@ -120,6 +218,7 @@ const JobHistoryModal = ({ title, visible, onCancel }) => {
                 <MyInput
                   name="leaveDate"
                   value={values.leaveDate}
+                  type="month"
                   onChange={handleChange}
                   onBlur={setFieldTouched}
                   touched={touched.leaveDate}

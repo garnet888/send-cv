@@ -1,4 +1,5 @@
 import React from "react";
+import { useAuthContext } from "../../context/AuthContext";
 import AuthActions from "./AuthActions/AuthActions";
 import UserAvatar from "./UserAvatar/UserAvatar";
 
@@ -7,7 +8,7 @@ import "./header.scss";
 const _logo = require("../../assets/logo.png");
 
 const Header = () => {
-  const isLogin = true;
+  const { isLogin } = useAuthContext();
 
   return (
     <header className="header">
