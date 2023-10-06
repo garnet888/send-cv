@@ -37,10 +37,18 @@ const UserAvatar = () => {
         setData(res.data);
         setIsLoading(false);
       })
-      .catch(() => {
-        setPopupType("sys_error");
-        setPopupText("");
-        setVisiblePopup(true);
+      .catch((err) => {
+        setIsLoading(false);
+
+        if (err.response.status === 409) {
+          setPopupType("sys_error");
+          setPopupText(err.response.data.message);
+          setVisiblePopup(true);
+        } else {
+          setPopupType("sys_error");
+          setPopupText("");
+          setVisiblePopup(true);
+        }
       });
   }, [hangleClickOutside, authConfig]);
 
@@ -55,6 +63,7 @@ const UserAvatar = () => {
       logoutHandler();
     } else {
       window.location.reload();
+      localStorage.clear();
     }
   };
 

@@ -4,15 +4,23 @@ import ReactPaginate from "react-paginate";
 import SearchInput from "../ui/searchInput/SearchInput";
 import JobCard from "../components/JobCard/JobCard";
 import JobMenu from "../components/JobMenu/JobMenu";
+import Axios from "../Axios";
 
 const JobList = () => {
+  const [data, setData] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchValue, setSearchValue] = useState("");
+  const [sortJobType, setSortJobType] = useState("");
+  const [sortTimeType, setSortTimeType] = useState("");
+
   /* ========== Paginate  =================================== */
   const perPage = 10;
-  const [dataLength, setDataLength] = useState(10);
+  const [dataLength, setDataLength] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
 
   const handlePageClick = (e) => {
-    // setIsLoading(true);
+    setIsLoading(true);
     const newOffset = (e.selected * perPage) % dataLength;
 
     setCurrentPage(newOffset);
@@ -20,20 +28,47 @@ const JobList = () => {
   /* ======================================================== */
 
   useEffect(() => {
-    setDataLength(20);
-  }, [currentPage]);
+    const DATA = {
+      searchValue,
+      jobTypeID: sortJobType,
+      timeTypeID: sortTimeType,
+      offset: currentPage,
+      limit: perPage,
+    };
+
+    Axios.post("/jobs/get-sorting", DATA)
+      .then((res) => {
+        if (res.data) {
+          const { data } = res;
+
+          setData(data);
+          setDataLength(data[0].total_count);
+
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+        }
+      })
+      .catch(() => setIsLoading(false));
+  }, [searchValue, sortJobType, sortTimeType, currentPage, perPage]);
 
   return (
     <div className="jobList">
-      <JobMenu />
+      <JobMenu
+        daraaArilga={isLoading}
+        sortJobType={sortJobType}
+        sortTimeType={sortTimeType}
+        setSortJobType={setSortJobType}
+        setSortTimeType={setSortTimeType}
+      />
 
       <div className="jobList__content">
         <div className="jobList__content-search">
-          <SearchInput />
+          <SearchInput value={searchValue} setValue={setSearchValue} />
         </div>
 
-        {[...Array(dataLength - perPage)].map((_, idx) => (
-          <JobCard key={idx} id={idx} />
+        {data.map((item, idx) => (
+          <JobCard key={idx} data={item} />
         ))}
 
         <ReactPaginate

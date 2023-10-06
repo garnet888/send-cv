@@ -41,7 +41,6 @@ const UserForm = () => {
   const { id } = useParams();
 
   const [data, setData] = useState({});
-
   const [showCV, setShowCV] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [btnIsLoading, setBtnIsLoading] = useState(false);
@@ -55,10 +54,8 @@ const UserForm = () => {
       setData({});
       setIsLoading(false);
     } else {
-      Axios.get(`/users/byID/${id}`, adminConfig)
+      Axios.get(`/users/${id}`, adminConfig)
         .then((res) => {
-          console.log("DATA=>", res.data);
-
           setData(res.data);
           setIsLoading(false);
         })
@@ -75,7 +72,7 @@ const UserForm = () => {
   const saveHandler = (values) => {
     setBtnIsLoading(false);
 
-    console.log("Personal info=>", values);
+    console.log("User form info=>", values);
   };
 
   return isLoading ? (
@@ -90,7 +87,9 @@ const UserForm = () => {
       />
 
       <Modal visible={showCV} onCancel={setShowCV}>
-        <MyCV />
+        <div style={{ width: "90vw" }}>
+          <MyCV onAdmin userID={id} />
+        </div>
       </Modal>
 
       <Formik

@@ -8,7 +8,7 @@ import EducationModal from "./EducationModal";
 
 import "./education.scss";
 
-const Education = ({ userID }) => {
+const Education = ({ onAdmin, userID }) => {
   const TITLE = "Боловсрол";
 
   const [allData, setAllData] = useState([]);
@@ -94,7 +94,11 @@ const Education = ({ userID }) => {
   return isLoading ? (
     <Loader />
   ) : (
-    <CVcard title={TITLE} showAddModal={() => setVisibleModal(true)}>
+    <CVcard
+      onAdmin={onAdmin}
+      title={TITLE}
+      showAddModal={() => setVisibleModal(true)}
+    >
       <Popup
         messageType={popupType}
         messageText={popupText}
@@ -119,6 +123,7 @@ const Education = ({ userID }) => {
         {allData.map((item, idx) => (
           <EduCard
             key={idx}
+            onAdmin={onAdmin}
             data={item}
             getDataID={setDataID}
             setVisibleModal={setVisibleModal}

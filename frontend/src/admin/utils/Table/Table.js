@@ -56,7 +56,7 @@ const Table = ({
   };
 
   function deleteOnHandle() {
-    const API_PATH = apiPath + "/delete/" + dataID;
+    const API_PATH = apiPath + "/" + dataID;
 
     Axios.delete(API_PATH, adminConfig)
       .then((res) => {

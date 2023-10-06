@@ -8,7 +8,7 @@ import SkillCard from "../SkillCard/SkillCard";
 
 import "../userSkills.scss";
 
-const SubSkill = ({ userID }) => {
+const SubSkill = ({ onAdmin, userID }) => {
   const TITLE = "Нэмэлт ур чадвар";
 
   const [allData, setAllData] = useState([]);
@@ -77,7 +77,11 @@ const SubSkill = ({ userID }) => {
   return isLoading ? (
     <Loader />
   ) : (
-    <CVcard title={TITLE} showAddModal={() => setVisibleModal(true)}>
+    <CVcard
+      onAdmin={onAdmin}
+      title={TITLE}
+      showAddModal={() => setVisibleModal(true)}
+    >
       <Popup
         messageType={popupType}
         messageText={popupText}
@@ -102,6 +106,7 @@ const SubSkill = ({ userID }) => {
           <SkillCard
             key={idx}
             type="sub"
+            onAdmin={onAdmin}
             data={item}
             getDataID={setDataID}
             setVisibleModal={setVisibleModal}

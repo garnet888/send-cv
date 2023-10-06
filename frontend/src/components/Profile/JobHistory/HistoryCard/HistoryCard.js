@@ -5,6 +5,7 @@ import { MdOutlineDeleteForever, MdEditNote } from "react-icons/md";
 import "./historyCard.scss";
 
 const HistoryCard = ({
+  onAdmin,
   data,
   getDataID,
   setVisibleModal,
@@ -49,17 +50,19 @@ const HistoryCard = ({
           : "---"}
       </li>
 
-      <div className="cvCard__actions absolute">
-        <button className="cvCard__actions-btn" onClick={showModal}>
-          <MdEditNote />
-        </button>
-        <button
-          className="cvCard__actions-btn delete"
-          onClick={() => showAlertMessage(data.id)}
-        >
-          <MdOutlineDeleteForever />
-        </button>
-      </div>
+      {onAdmin || (
+        <div className="cvCard__actions absolute">
+          <button className="cvCard__actions-btn" onClick={showModal}>
+            <MdEditNote />
+          </button>
+          <button
+            className="cvCard__actions-btn delete"
+            onClick={() => showAlertMessage(data.id)}
+          >
+            <MdOutlineDeleteForever />
+          </button>
+        </div>
+      )}
     </ul>
   );
 };

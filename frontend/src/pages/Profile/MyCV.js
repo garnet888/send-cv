@@ -8,23 +8,27 @@ import JobHistory from "../../components/Profile/JobHistory/JobHistory";
 import JobSkill from "../../components/Profile/UserSkills/JobSkill/JobSkill";
 import SubSkill from "../../components/Profile/UserSkills/SubSkill/SubSkill";
 
-const MyCV = () => {
+const MyCV = ({ onAdmin = false, userID }) => {
   const { authConfig } = useAuthContext();
 
   const [myID, setMyID] = useState("");
   const [visibleSysErr, setVisibleSysErr] = useState(false);
 
   useEffect(() => {
-    Axios.get("/auth/me", authConfig)
-      .then((res) => {
-        if (res.data) {
-          setMyID(res.data.id);
-        } else {
-          setVisibleSysErr(true);
-        }
-      })
-      .catch(() => setVisibleSysErr(true));
-  }, [authConfig]);
+    if (onAdmin) {
+      setMyID(userID);
+    } else {
+      Axios.get("/auth/me", authConfig)
+        .then((res) => {
+          if (res.data) {
+            setMyID(res.data.id);
+          } else {
+            setVisibleSysErr(true);
+          }
+        })
+        .catch(() => setVisibleSysErr(true));
+    }
+  }, [onAdmin, userID, authConfig]);
 
   return (
     <div className="myCV">
@@ -34,13 +38,15 @@ const MyCV = () => {
         onOk={() => window.location.reload()}
       />
 
-      <h3 className="myCV__title">Миний анкет</h3>
+      <h3 className="myCV__title">
+        {onAdmin ? "Хэрэглэгчийн" : "Миний"} анкет
+      </h3>
 
-      <PlanningJob userID={myID} />
-      <Education userID={myID} />
-      <JobHistory userID={myID} />
-      <JobSkill userID={myID} />
-      <SubSkill userID={myID} />
+      <PlanningJob onAdmin={onAdmin} userID={myID} />
+      <Education onAdmin={onAdmin} userID={myID} />
+      <JobHistory onAdmin={onAdmin} userID={myID} />
+      <JobSkill onAdmin={onAdmin} userID={myID} />
+      <SubSkill onAdmin={onAdmin} userID={myID} />
     </div>
   );
 };

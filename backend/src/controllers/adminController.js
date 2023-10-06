@@ -1,5 +1,5 @@
-const AdminTable = require("../tables/adminTable");
 const { hash, setToken } = require("../authHelper");
+const AdminTable = require("../tables/adminTable");
 
 const login = async (req, res) => {
   try {

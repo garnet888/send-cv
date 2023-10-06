@@ -3,7 +3,13 @@ import { MdOutlineDeleteForever, MdEditNote } from "react-icons/md";
 
 import "./eduCard.scss";
 
-const EduCard = ({ data, getDataID, setVisibleModal, showAlertMessage }) => {
+const EduCard = ({
+  onAdmin,
+  data,
+  getDataID,
+  setVisibleModal,
+  showAlertMessage,
+}) => {
   const showModal = () => {
     getDataID(data.id);
     setVisibleModal(true);
@@ -39,17 +45,19 @@ const EduCard = ({ data, getDataID, setVisibleModal, showAlertMessage }) => {
         {data.gpa ? data.gpa : "---"}
       </li>
 
-      <div className="cvCard__actions absolute">
-        <button className="cvCard__actions-btn" onClick={showModal}>
-          <MdEditNote />
-        </button>
-        <button
-          className="cvCard__actions-btn delete"
-          onClick={() => showAlertMessage(data.id)}
-        >
-          <MdOutlineDeleteForever />
-        </button>
-      </div>
+      {onAdmin || (
+        <div className="cvCard__actions absolute">
+          <button className="cvCard__actions-btn" onClick={showModal}>
+            <MdEditNote />
+          </button>
+          <button
+            className="cvCard__actions-btn delete"
+            onClick={() => showAlertMessage(data.id)}
+          >
+            <MdOutlineDeleteForever />
+          </button>
+        </div>
+      )}
     </ul>
   );
 };

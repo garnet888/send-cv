@@ -8,7 +8,7 @@ import PlanningJobModal from "./PlanningJobModal";
 
 import "./planningJob.scss";
 
-const PlanningJob = ({ userID }) => {
+const PlanningJob = ({ onAdmin, userID }) => {
   const TITLE = "Ажиллахаар төлөвлөж буй ажлын байр";
 
   const [data, setData] = useState({});
@@ -118,12 +118,14 @@ const PlanningJob = ({ userID }) => {
           {data.job_type ? data.job_type : "---"}
         </li>
 
-        <button
-          className="planningJob__editBtn"
-          onClick={() => setVisibleModal(true)}
-        >
-          <MdEditNote />
-        </button>
+        {onAdmin || (
+          <button
+            className="planningJob__editBtn"
+            onClick={() => setVisibleModal(true)}
+          >
+            <MdEditNote />
+          </button>
+        )}
       </ul>
     </CVcard>
   );

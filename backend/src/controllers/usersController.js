@@ -1,5 +1,5 @@
-const UsersTable = require("../tables/usersTable");
 const { hash, authAccount } = require("../authHelper");
+const UsersTable = require("../tables/usersTable");
 
 const getAllUsers = async (req, res) => {
   try {

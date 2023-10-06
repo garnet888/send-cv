@@ -5,14 +5,17 @@ const cors = require("cors");
 
 const adminRoute = require("./src/routes/adminRoute");
 const authRoute = require("./src/routes/authRoute");
+
 const usersRoute = require("./src/routes/usersRoute");
 const planJobRoute = require("./src/routes/planJobRoute");
-const jobsRoute = require("./src/routes/jobsRoute");
 
 const cvEduRoute = require("./src/routes/cvEduRoute");
 const cvJobHisRoute = require("./src/routes/cvJobHisRoute");
 const cvJobSkillRoute = require("./src/routes/cvJobSkillRoute");
 const cvSubSkillRoute = require("./src/routes/cvSubSkillRoute");
+
+const jobsRoute = require("./src/routes/jobsRoute");
+const sentCVsRoute = require("./src/routes/sentCVsRoute");
 
 const app = express();
 app.use(express.json());
@@ -29,14 +32,17 @@ app.use(
 
 app.use("/api/admin", adminRoute);
 app.use("/api/auth", authRoute);
+
 app.use("/api/users", usersRoute);
 app.use("/api/plan-job", planJobRoute);
-app.use("/api/jobs", jobsRoute);
 
 app.use("/api/cv-edu", cvEduRoute);
 app.use("/api/cv-job-his", cvJobHisRoute);
 app.use("/api/cv-job-skill", cvJobSkillRoute);
 app.use("/api/cv-sub-skill", cvSubSkillRoute);
+
+app.use("/api/jobs", jobsRoute);
+app.use("/api/sent-cv", sentCVsRoute);
 
 app.get("/", (req, res) => {
   res.send("Server is running...");

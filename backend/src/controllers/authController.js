@@ -1,5 +1,5 @@
-const UsersTable = require("../tables/usersTable");
 const { hash, setToken, authAccount } = require("../authHelper");
+const UsersTable = require("../tables/usersTable");
 
 const signup = async (req, res) => {
   try {

@@ -8,7 +8,7 @@ import HistoryCard from "./HistoryCard/HistoryCard";
 
 import "./jobHistory.scss";
 
-const JobHistory = ({ userID }) => {
+const JobHistory = ({ onAdmin, userID }) => {
   const TITLE = "Ажлын туршлага";
 
   const [allData, setAllData] = useState([]);
@@ -97,7 +97,11 @@ const JobHistory = ({ userID }) => {
   return isLoading ? (
     <Loader />
   ) : (
-    <CVcard title={TITLE} showAddModal={() => setVisibleModal(true)}>
+    <CVcard
+      onAdmin={onAdmin}
+      title={TITLE}
+      showAddModal={() => setVisibleModal(true)}
+    >
       <Popup
         messageType={popupType}
         messageText={popupText}
@@ -122,6 +126,7 @@ const JobHistory = ({ userID }) => {
         {allData.map((item, idx) => (
           <HistoryCard
             key={idx}
+            onAdmin={onAdmin}
             data={item}
             getDataID={setDataID}
             setVisibleModal={setVisibleModal}

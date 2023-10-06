@@ -1,18 +1,23 @@
 import React from "react";
+import moment from "moment/moment";
 
 import "./jobCard.scss";
 
-const JobCard = ({ id }) => {
+const JobCard = ({ data }) => {
   return (
-    <a className="jobCard" href={`/detail/${id}`}>
+    <a className="jobCard" href={`/detail/${data.id}`}>
       <div className="jobCard__info">
-        <h3 className="jobCard__title">Job's Name {parseInt(id) + 1}</h3>
-        <p>Job Type / Work time type</p>
+        <h3 className="jobCard__title">{data.name}</h3>
+        <p>
+          {data.job_type} / {data.time_type}
+        </p>
 
-        <p>2.100.000₮ - 2.500.000₮</p>
+        <p>{`${new Intl.NumberFormat().format(
+          data.min_salary
+        )}₮ - ${new Intl.NumberFormat().format(data.max_salary)}₮`}</p>
       </div>
 
-      <p>10-р сарын 01, 13:04</p>
+      <p>{moment(data.created_date).format("YYYY/MM/DD, HH:mm")}</p>
     </a>
   );
 };

@@ -43,8 +43,25 @@
     }
   }
 
+  &__sentText,
   &__sendCV {
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+
     margin: 0 auto;
     margin-top: 2rem;
+  }
+
+  &__sentText {
+    user-select: none;
+
+    background-color: $primary-color;
+    color: white;
+    border-radius: 1rem;
+
+    text-align: center;
+    font-size: 18px;
+
+    padding: 0.6rem;
   }
 }

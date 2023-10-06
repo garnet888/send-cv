@@ -5,6 +5,7 @@ import "./skillCard.scss";
 
 const SkillCard = ({
   type = "job",
+  onAdmin,
   data,
   getDataID,
   setVisibleModal,
@@ -25,17 +26,19 @@ const SkillCard = ({
         <label>{data.skill}</label>
       )}
 
-      <div className="cvCard__actions">
-        <button className="cvCard__actions-btn" onClick={showModal}>
-          <MdEditNote />
-        </button>
-        <button
-          className="cvCard__actions-btn delete"
-          onClick={() => showAlertMessage(data.id)}
-        >
-          <MdOutlineDeleteForever />
-        </button>
-      </div>
+      {onAdmin || (
+        <div className="cvCard__actions">
+          <button className="cvCard__actions-btn" onClick={showModal}>
+            <MdEditNote />
+          </button>
+          <button
+            className="cvCard__actions-btn delete"
+            onClick={() => showAlertMessage(data.id)}
+          >
+            <MdOutlineDeleteForever />
+          </button>
+        </div>
+      )}
     </li>
   );
 };
