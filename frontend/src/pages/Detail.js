@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import moment from "moment";
 import { useAuthContext } from "../context/AuthContext";
 import Axios from "../Axios";
+import CKeditor from "../admin/utils/Ckeditor";
 import Loader from "../utils/Loader/Loader";
 import Popup from "../utils/Popup/Popup";
 
@@ -150,43 +151,23 @@ const Detail = () => {
         </p>
       </div>
 
-      <div className="detail__content">
-        <div className="detail__content-text">
-          <b>Ажлын байрны зорилго/үүрэг:</b>
+      <div className="detail__text">
+        <div className="detail__text-content">
+          <b className="detail__text-content-title">
+            Ажлын байрны зорилго/үүрэг:
+          </b>
 
-          <p>
-            {data.duty}
-
-            {/* Хүүхдийн өвчлөл гэмтлийг оношилж эмчлэх ба хүүхдийн өвчнөөс
-            урьдчилан сэргийлэхэд туслах Хүүхдийн хооллолт, өдөр тутмын үйл
-            ажиллагаа, ариун цэвэр, эрүүл ахуйн өвчнөөс урьдчилан сэргийлэх
-            зөвлөгөө үйлчилгээг батлагдсан стандарт, удирдамжийн дагуу
-            мэргэжлийн өндөр түвшинд үзүүлэх */}
-          </p>
+          <div className="detail__text-content-renderText">
+            <CKeditor text={data.duty} disabled />
+          </div>
         </div>
 
-        <div className="detail__content-text">
-          <b>Тавигдах шаардлага:</b>
+        <div className="detail__text-content">
+          <b className="detail__text-content-title">Тавигдах шаардлага:</b>
 
-          <p>
-            {data.requirement}
-
-            {/* - Хүүхдийн эмчийн мэргэшлийн сургалтад хамрагдсан, үнэмлэхтэй байх
-            <br />
-            - Мэргэжлээрээ 2 ба түүнээс дээш жил ажилласан байх
-            <br />
-            - Анагаах ухааны боловсрол олгох их, дээд сургуулийг хүний их эмч
-            мэргэжлээр бакалавр болон түүнээс дээш зэрэгтэй төгссөн цэвэр, эрүүл
-            ахуйн өвчнөөс урьдчилан сэргийлэх зөвлөгөө үйлчилгээг
-            <br />
-            - Эмчлэх үйл ажиллагаа эрхлэх зөвшөөрөлтэй байх
-            <br />
-            - Англи хэлний дундаас дээш түвшний мэдлэгтэй
-            <br />
-            - Компьютерын хэрэглээний программуудыг бүрэн эзэмшсэн
-            <br />- Эмнэлгийн мэргэжилтний ёс зүйн хэмжээг эрхэмлэн дээдэлдэг,
-            харилцаа хандлага сайтай */}
-          </p>
+          <div className="detail__text-content-renderText">
+            <CKeditor text={data.requirement} disabled />
+          </div>
         </div>
       </div>
 

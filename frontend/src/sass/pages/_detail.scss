@@ -31,15 +31,20 @@
     }
   }
 
-  &__content {
+  &__text {
     display: flex;
     flex-direction: column;
-    gap: 2.4rem;
+    gap: 2rem;
 
-    &-text {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
+    &-content {
+      &-title {
+        position: relative;
+        z-index: 1;
+      }
+
+      &-renderText {
+        margin-top: -1.2rem;
+      }
     }
   }
 

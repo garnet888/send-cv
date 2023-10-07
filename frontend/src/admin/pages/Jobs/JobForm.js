@@ -9,6 +9,7 @@ import MyRadio from "../../../ui/myRadio/MyRadio";
 import Loader from "../../../utils/Loader/Loader";
 import Card from "../../utils/Card/Card";
 import Popup from "../../../utils/Popup/Popup";
+import CKeditor from "../../utils/Ckeditor";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Хоосон байна!"),
@@ -307,30 +308,35 @@ const JobForm = () => {
 
             <span className="myForm__row">
               <label className="myForm__row-label">Гүйцэтгэх үүрэг:</label>
-              <MyInput
+
+              <CKeditor
+                onFormik
                 name="duty"
-                value={values.duty}
-                onChange={handleChange}
-                onBlur={setFieldTouched}
-                touched={touched.duty}
-                errorText={errors.duty}
-                isTextarea
-                rows={3}
+                setText={setFieldValue}
+                text={values.duty}
+                small
               />
+
+              {touched.duty && errors.duty && (
+                <label className="myInput__errorText">{errors.duty}</label>
+              )}
             </span>
 
             <span className="myForm__row">
               <label className="myForm__row-label">Тавигдах шаардлага:</label>
-              <MyInput
+
+              <CKeditor
+                onFormik
                 name="requirement"
-                value={values.requirement}
-                onChange={handleChange}
-                onBlur={setFieldTouched}
-                touched={touched.requirement}
-                errorText={errors.requirement}
-                isTextarea
-                rows={5}
+                setText={setFieldValue}
+                text={values.requirement}
               />
+
+              {touched.requirement && errors.requirement && (
+                <label className="myInput__errorText">
+                  {errors.requirement}
+                </label>
+              )}
             </span>
 
             {btnIsLoading ? (
