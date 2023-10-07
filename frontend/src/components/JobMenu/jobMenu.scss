@@ -15,6 +15,10 @@
 
   padding: 1rem;
 
+  @include respondTo(mobile) {
+    display: none;
+  }
+
   &__clearBtn {
     position: absolute;
     top: 6px;

@@ -1,7 +1,9 @@
 @import "/src/sass/global";
 
 .searchInput {
+  width: 100%;
   height: 3rem;
+  
   display: flex;
 
   &__input {

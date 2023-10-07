@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { TiChevronLeft, TiChevronRight } from "react-icons/ti";
 import ReactPaginate from "react-paginate";
+import Axios from "../Axios";
 import SearchInput from "../ui/searchInput/SearchInput";
+import JobSortToggle from "../components/JobSortToggle/JobSortToggle";
 import JobCard from "../components/JobCard/JobCard";
 import JobMenu from "../components/JobMenu/JobMenu";
-import Axios from "../Axios";
 
 const JobList = () => {
   const [data, setData] = useState([]);
@@ -64,6 +65,7 @@ const JobList = () => {
 
       <div className="jobList__content">
         <div className="jobList__content-search">
+          <JobSortToggle />
           <SearchInput value={searchValue} setValue={setSearchValue} />
         </div>
 
